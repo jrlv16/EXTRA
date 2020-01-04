@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import  UserSerializer
+from .serializers import  UserSerializer, AdressToUserSerializer, AdressSerializer
+from .models import AdressToUser, Adress
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
@@ -11,3 +12,17 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes =(AllowAny,)
+
+
+class AdressToUserViewSet(viewsets.ModelViewSet):
+    queryset = AdressToUser.objects.all().select_related('user_id')
+    serializer_class = AdressToUserSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes =(AllowAny,)
+
+class AdressViewset(viewsets.ModelViewSet):
+    queryset = Adress.objects.all()
+    serializer_class = AdressSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes =(AllowAny,)
+        

@@ -48,9 +48,9 @@ class Adress(models.Model):
     
 
     def __str__(self):
-        return '%s %s %s %s' % (self.numero, self.adress, self.code_postal, self.ville )
+        return '%s %s %s %s' % (self.numero, self.adress, self.code_postal, self.ville )    
 
 
 class AdressToUser(models.Model):
-    user_id = models.ForeignKey(User, verbose_name="Utilisateur", on_delete=models.CASCADE)
-    adress = models.ForeignKey(Adress, verbose_name="Adresse", on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, verbose_name="Utilisateur", on_delete=models.CASCADE, related_name='adressu')
+    adress = models.ForeignKey(Adress, verbose_name="Adresse", on_delete=models.CASCADE, related_name='adressa')
