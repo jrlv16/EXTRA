@@ -27,28 +27,38 @@ class UserSerializer(serializers.ModelSerializer):
         
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user=user)
-
-        # adress = Adress.objects.create(**validated_data)
-        # for adress in adress:
-        #     AdressToUser.create(user_id=User.created.id, adress=Adress.created.id )
         
         return user
 
 
 class AdressToUserSerializer(serializers.ModelSerializer):
     
-    user_id = UserSerializer(many=False)
+    user = UserSerializer(many=False)
     adress = AdressSerializer(many=False)
+    
     class Meta:
         model = AdressToUser
-        fields = ('id', 'user_id', 'adress')
+        fields = ('user', 'adress')
         
         # authentication_classes = (TokenAuthentication,)
         # permission_classes = (IsAuthenticated,)
 
     def create(self, validated_data):
-        adress_data = validated_data.pop('adress')
         user_data = validated_data.pop('user')
-        AdressToUser.objects.create(user_id=user_data.id, adress=adress_data)
-        return AdressToUser
+        user = UserSerializer(data=user_data)
+        user.is_valid()
+        user = user.save()
+
+        adress_data = validated_data.pop('adress')
+        adress = AdressSerializer(data=adress_data)
+        adress.is_valid()
+        adress = adress.save()
+
+        print(user.id, adress.id)
+        # {'user': user.id, 'adress_id': adress.id}
+        AdressToUser.objects.create(**{'user': user.id, 'adress_id': adress.id})
         
+        return AdressToUser
+
+
+

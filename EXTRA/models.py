@@ -52,5 +52,8 @@ class Adress(models.Model):
 
 
 class AdressToUser(models.Model):
-    user_id = models.ForeignKey(User, verbose_name="Utilisateur", on_delete=models.CASCADE, related_name='adressu')
+    user = models.ForeignKey(User, verbose_name="Utilisateur", on_delete=models.CASCADE, related_name='adressu',)
     adress = models.ForeignKey(Adress, verbose_name="Adresse", on_delete=models.CASCADE, related_name='adressa')
+
+    def __str__(self):
+        return '%s %s' % (self.user_id, self.adress)

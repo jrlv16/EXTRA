@@ -15,14 +15,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class AdressToUserViewSet(viewsets.ModelViewSet):
-    queryset = AdressToUser.objects.all().select_related('user_id')
+    queryset = AdressToUser.objects.all()
     serializer_class = AdressToUserSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes =(AllowAny,)
 
-class AdressViewset(viewsets.ModelViewSet):
+class AdressViewSet(viewsets.ModelViewSet):
     queryset = Adress.objects.all()
     serializer_class = AdressSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes =(AllowAny,)
-        
