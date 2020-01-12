@@ -10,55 +10,48 @@ class AdressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Adress
-        fields =('__all__')
+        fields = ('id', 'numero', 'adress', 'code_postal', 'ville')
 
+
+class CatSerializer(serializers.ModelSerializer):
+    
+    # user_id = UserSerializer()
+
+    class Meta:
+        model = Cat
+        fields = ('id', 'user_id_id', 'cat')
+
+    # def create(self, validated_data):
+    #     user_data = validated_data.pop(user_id)
+    #     cat = Cat.object.create(**validated_data)
+    #     User.objects.create(**user_data)
 
 
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    cat = CatSerializer()
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'cat')
         # permet de cacher le password à l'affichage du user
         extra_kwargs = {'password': {'write_only': True, 'required':True}}
         # permet de hasher le password avant enregistrement sinon en clair
+    
     def create(self, validated_data):
-        
+        cat_data = validated_data.pop('cat')
         user = User.objects.create_user(**validated_data)
-        Token.objects.create(user=user)
-        
+        Token.objects.get_or_create(user=user)
+        Cat.objects.create(user_id_id=user.id, **cat_data)
         return user
+
 
 
 class AdressToUserSerializer(serializers.ModelSerializer):
     
-    user = UserSerializer(many=False)
-    adress = AdressSerializer(many=False)
+    user = UserSerializer()
+    adress = AdressSerializer()
     
     class Meta:
         model = AdressToUser
         fields = ('user', 'adress')
-        
-        # authentication_classes = (TokenAuthentication,)
-        # permission_classes = (IsAuthenticated,)
-
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = UserSerializer(data=user_data)
-        user.is_valid()
-        user = user.save()
-
-        adress_data = validated_data.pop('adress')
-        adress = AdressSerializer(data=adress_data)
-        adress.is_valid()
-        adress = adress.save()
-
-        print(user.id, adress.id)
-        # {'user': user.id, 'adress_id': adress.id}
-        AdressToUser.objects.create(**{'user': user.id, 'adress_id': adress.id})
-        
-        return AdressToUser
-
-
-
