@@ -24,11 +24,26 @@ class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cat
         fields = ('id', 'user_id_id', 'cat')
+
+class AdressToUserSerializer(serializers.ModelSerializer):
     
+    
+    adress = AdressSerializer()
+    
+    class Meta:
+        model = AdressToUser
+        fields = ('adress',)
+
+    def create(self, validated_data):
+        user = self.request.user
+        adress = Adress.objects.create(user_id_id=user.id, **validated_data)
+        return adress
+
 
 class UserSerializer(serializers.ModelSerializer):
-    cat = CatSerializer(many=True)
+    cat = CatSerializer()
     coordonnees = CoordonneesSerializer()
+    # adress = AdressToUserSerializer()
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'cat', 'coordonnees')
@@ -39,18 +54,27 @@ class UserSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         cat_data = validated_data.pop('cat')
+        coord_data = validated_data.pop('coordonnees')  #1
+        # adress_data = validated_data.pop('adress') #2
         user = User.objects.create_user(**validated_data)
         Token.objects.get_or_create(user=user)
         Cat.objects.create(user_id_id=user.id, **cat_data)
+        Coordonnees.objects.create(user_id_id=user.id, **coord_data) #3
+        # AdressToUser.objects.create(user_id=user.id, **adress_data) #4
         return user
-   
 
 
 class AdressToUserSerializer(serializers.ModelSerializer):
     
-    user = UserSerializer()
+    
     adress = AdressSerializer()
     
     class Meta:
         model = AdressToUser
-        fields = ('user', 'adress')
+        fields = ('adress',)
+
+    def create(self, validated_data):
+        user = self.request.user
+        adress = Adress.objects.create(user_id_id=user.id, **validated_data)
+        return adress
+
