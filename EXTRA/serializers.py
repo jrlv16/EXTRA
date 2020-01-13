@@ -5,6 +5,10 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Adress, AdressToUser, Cat, Coordonnees
 
+class CoordonneesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coordonnees
+        fields =['user_id_id', 'phone', 'phonefix']
 
 class AdressSerializer(serializers.ModelSerializer):
 
@@ -20,23 +24,18 @@ class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cat
         fields = ('id', 'user_id_id', 'cat')
-
-    # def create(self, validated_data):
-    #     user_data = validated_data.pop(user_id)
-    #     cat = Cat.object.create(**validated_data)
-    #     User.objects.create(**user_data)
-
-
+    
 
 class UserSerializer(serializers.ModelSerializer):
-    cat = CatSerializer()
-
+    cat = CatSerializer(many=True)
+    coordonnees = CoordonneesSerializer()
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'cat')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'cat', 'coordonnees')
         # permet de cacher le password à l'affichage du user
         extra_kwargs = {'password': {'write_only': True, 'required':True}}
         # permet de hasher le password avant enregistrement sinon en clair
+        
     
     def create(self, validated_data):
         cat_data = validated_data.pop('cat')
@@ -44,7 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
         Token.objects.get_or_create(user=user)
         Cat.objects.create(user_id_id=user.id, **cat_data)
         return user
-
+   
 
 
 class AdressToUserSerializer(serializers.ModelSerializer):

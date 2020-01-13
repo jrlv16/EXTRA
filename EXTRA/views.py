@@ -18,12 +18,14 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes =(AllowAny,)
 
-
+          
+    
 class AdressToUserViewSet(viewsets.ModelViewSet):
     queryset = AdressToUser.objects.all().select_related('user', 'adress')
     serializer_class = AdressToUserSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes =(AllowAny,)
+
 
 class AdressViewSet(viewsets.ModelViewSet):
     queryset = Adress.objects.all()

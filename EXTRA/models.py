@@ -23,13 +23,13 @@ class Cat(models.Model):
                             default="")
 
     def __str__(self):
-        d = '%s %s %s' % (self.user_id.last_name, self.user_id.first_name, self.cat)
-        return d 
+        #d = '%s %s %s' % (self.user_id.last_name, self.user_id.first_name, self.cat)
+        return self.cat 
 
 
 class Coordonnees(models.Model):
-    user_id = models.ForeignKey(User, verbose_name="Utilisateur", on_delete=models.CASCADE, related_name='coordonnees')
-    phone = PhoneNumberField(_("Portable"), null=False, blank=False, unique=True)
+    user_id = models.OneToOneField(User, verbose_name="Utilisateur", on_delete=models.CASCADE, related_name='coordonnees')
+    phone = PhoneNumberField(_("Portable"), null=False, unique=True)
     phonefix = PhoneNumberField(_("Tel Fixe"), null=True, blank=True)
 
     def __str__(self):
