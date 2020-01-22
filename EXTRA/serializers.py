@@ -63,6 +63,28 @@ class UserSerializer(serializers.ModelSerializer):
         # AdressToUser.objects.create(user_id=user.id, **adress_data) #4
         return user
 
+    # TODO à reprendre pour mettre à jour uniquement une table à la fois 
+
+    # def update(self, instance, validated_data):
+        
+    #     cat_data = validated_data.get('cat')
+        
+    #     coord_data = validated_data.get('coordonnees')
+        
+    #     instance.username = validated_data.get('username', instance.username)
+    #     instance.password = validated_data.get('password', instance.password)
+    #     instance.email = validated_data.get('email', instance.email)
+    #     instance.first_name = validated_data.get('first_name', instance.first_name)
+    #     instance.last_name = validated_data.get('last_name', instance.last_name)
+    #     instance.save()
+        
+        
+    #     serializer = CatSerializer(instance.id, **cat_data)
+    #     serializer.save()
+    #     serializer = CoordonneesSerializer(user_id_id=instance.id, **coord_data)
+    #     serializer.save()
+
+    #     return instance
 
 class AdressToUserSerializer(serializers.ModelSerializer):
     
@@ -74,7 +96,8 @@ class AdressToUserSerializer(serializers.ModelSerializer):
         fields = ('adress',)
 
     def create(self, validated_data):
-        user = self.request.user
-        adress = Adress.objects.create(user_id_id=user.id, **validated_data)
+       
+        adress = Adress.objects.create(**validated_data)
         return adress
+
 
