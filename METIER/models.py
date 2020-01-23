@@ -10,7 +10,6 @@ class Corporation(models.Model):
     Définition des corporations pour les applis futures
     '''
     nom = models.CharField("Corporation", max_length=50)
-
     def __str__(self):
         return self.nom
 
