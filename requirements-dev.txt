@@ -5,9 +5,13 @@ certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
 decorator==4.4.1
+dj-database-url==0.5.0
+dj-static==0.0.6
 Django==3.0
+django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==1.1.1
 django-phonenumber-field==4.0.0
+django-rest-auth==0.9.5
 django-search-views==0.3.7
 djangorestframework==3.11.0
 future==0.18.2
@@ -16,10 +20,12 @@ idna==2.8
 mysqlclient==1.4.6
 phonenumbers==8.11.1
 psycopg2==2.8.4
+python-decouple==3.3
 pytz==2019.3
 ratelim==0.1.6
 requests==2.22.0
 six==1.13.0
 soupsieve==1.9.5
 sqlparse==0.3.0
+static3==0.7.0
 urllib3==1.25.7
