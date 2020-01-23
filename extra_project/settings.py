@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'extra_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if 'amazonaws.com' in 'DATABASE_URL'
+if 'amazonaws.com' in DATABASE_URL
     default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 
     DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
