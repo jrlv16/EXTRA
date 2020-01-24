@@ -149,5 +149,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 PHONENUMBER_DEFAULT_REGION = 'FR'
 PHONENUMBER_DB_FORMAT = 'E164'
 
-# GEOTH_LIBRARY_PATH = 'C:\\OSGeo4W64\\bin'
-# GDAL_LIBRARY_PATH = 'C:\\OSGeo4W64\\bin\\gdal300.dll'
+if 'amazonaws.com'  not in 'DATABASE_URL':
+    GEOTH_LIBRARY_PATH = 'C:\\OSGeo4W64\\bin'
+    GDAL_LIBRARY_PATH = 'C:\\OSGeo4W64\\bin\\gdal300.dll'
+else:
+    pass
