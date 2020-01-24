@@ -7,3 +7,4 @@ METIER/migrations/
 EXTRA/essai_serial
 extra_project/__pycache__/
 *.pyc
+extra_project/__pycache__/settings.cpython-38.pyc
