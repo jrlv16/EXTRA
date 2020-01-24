@@ -1,0 +1,71 @@
+adresstouserserializer-suite        
+        # authentication_classes = (TokenAuthentication,)
+        # permission_classes = (IsAuthenticated,)
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserSerializer(data=user_data)
+        user.is_valid()
+        user = user.save()
+      
+
+        adress_data = validated_data.pop('adress')
+        adress = AdressSerializer(data=adress_data)
+        adress.is_valid()
+        adress = adress.save()
+  
+
+        print(user.pk, adress.pk)
+        # {'user': user.id, 'adress_id': adress.id}
+        # AdressToUser.objects.create(**{'user': user.id, 'adress_id': adress.id})
+        AdressToUser.objects.create(user = user,
+                                    adress = adress)
+        
+        return AdressToUser
+
+
+class ExtraCreateSerializer(serializers.ModelSerializer):
+    """
+    Création adresse et extra en même temps
+    """
+    class CoordonneesTempSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Coordonnees
+            exclude = ['user_id']
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'password', 'email', 'first_name', 'last_name', 'coordonnees']
+
+    coordonnees = CoordonneesTempSerializer()
+        
+    def create(self, validated_data):
+        coordonnees_data = validated_data.pop('coordonnees')
+        extra_instance = User.objects.create(**validated_data)
+        Coordonnees.objects.create(user_id=extra_instance,
+                                   **coordonnees_data)
+    
+        return extra_instance              
+
+class CoordonneesSerializer(serializers.ModelSerializer):
+
+    class UserCoordSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = User
+            fields = ['id', 'username', 'password', 'email', 'first_name', 'last_name']
+
+    
+
+    class Meta:
+        model = Coordonnees
+        fields = '__all__'
+        depth = 2
+
+    
+ 
+    def create(self, validated_data):
+        
+        extra_instance = User.objects.create(**validated_data)
+        Coordonnees.objects.create(user_id=extra_instance,
+                                   **coordonnees_data)

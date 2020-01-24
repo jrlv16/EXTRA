@@ -89,7 +89,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+'''
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': {
         'rest_framework.permissions.IsAuthenticated',},
@@ -97,7 +97,7 @@ REST_FRAMEWORK = {
      'PAGE_SIZE': 3
         
     }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
