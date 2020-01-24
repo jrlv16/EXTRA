@@ -5,3 +5,5 @@ EXTRA/migrations/
 METIER/__pycache__/
 METIER/migrations/
 EXTRA/essai_serial
+extra_project/__pycache__/
+*.pyc
